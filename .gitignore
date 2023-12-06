@@ -1,0 +1,5 @@
+# Exclude build directory
+/build/
+
+# Exclude logs
+/logs/
