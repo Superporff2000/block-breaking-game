@@ -3,11 +3,11 @@ cmake_minimum_required(VERSION 3.27)
 project(
     block-breaking-game
     VERSION 0.1.0
-    LANGUAGES CXX)
+    LANGUAGES C)
 
 include(CTest)
 
-add_executable(main "src/main.cpp")
+add_executable(main "src/main.c")
 
 target_include_directories(main PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/src/include")
 target_link_directories(main PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/src/lib")
