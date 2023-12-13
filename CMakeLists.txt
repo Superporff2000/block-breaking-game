@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.27)
 
+# Describe the basic project details - name, version and language used
+
 project(
     block-breaking-game
     VERSION 0.1.0
@@ -7,12 +9,20 @@ project(
 
 include(CTest)
 
+# The main file to be compiled
+
 add_executable(main "src/main.c")
 
-target_include_directories(main PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/src/include")
-target_link_directories(main PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/src/lib")
+# Include and link the SDL files
+
+target_include_directories(main PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/include")
+target_link_directories(main PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/lib")
 
 target_link_libraries(main PRIVATE mingw32 SDL2main SDL2)
+
+# The game needs SDL2.dll to run, so we added a custom command
+# to move the dll from src to the build directory where the
+# game can use it
 
 set(SDL2_SOURCE "${CMAKE_CURRENT_SOURCE_DIR}/src/SDL2.dll")
 set(SDL2_DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/SDL2.dll")
@@ -30,4 +40,6 @@ add_custom_target(CopySDL2Dll DEPENDS "${SDL2_DESTINATION}")
 
 add_dependencies(main CopySDL2Dll)
 
-# Later on we will add script to build for releasing
+# Later on we will add script to build for releasing to
+# different platforms such as Windows, various linux distros
+# and OSX
