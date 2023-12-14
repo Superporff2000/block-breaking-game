@@ -12,14 +12,14 @@ Block edgeBreakableBlock[3][1];     // The blocks at left edge should be at some
 Block breakableBlock[3][10];        // they have been defined seperately
 Ball gameBall;
 
-SDL_Window* initializeSDL(void) {
+SDL_Window *initializeSDL(void) {
 
     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
         fprintf(stderr, "SDL initialization failed: %s\n", SDL_GetError());
         return NULL;
     }
 
-    SDL_Window* window = SDL_CreateWindow(
+    SDL_Window *window = SDL_CreateWindow(
         "Block Breaker",
         SDL_WINDOWPOS_UNDEFINED,
         SDL_WINDOWPOS_UNDEFINED,
@@ -37,7 +37,7 @@ SDL_Window* initializeSDL(void) {
     return window;
 }
 
-SDL_Renderer* createRenderer(SDL_Window* window) {
+SDL_Renderer *createRenderer(SDL_Window *window) {
 
     SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
     
@@ -54,7 +54,7 @@ SDL_Renderer* createRenderer(SDL_Window* window) {
     return renderer; // Return the created renderer
 }
 
-void runGameLoop(SDL_Renderer* renderer) {
+void runGameLoop(SDL_Renderer *renderer) {
 
     int quit = 0;
     int speed = 5;
@@ -66,8 +66,9 @@ void runGameLoop(SDL_Renderer* renderer) {
     for (int i = 0; i < 3; ++i) {
 
         for (int j = 0; j < 10; ++j) {
-
-            breakableBlock[i][j] = createBlock(j * 60, i * 30, 50, 20, 1);
+            
+            int xOffset = 5;
+            breakableBlock[i][j] = createBlock(j * 60 + xOffset, i * 30, 50, 20, 1);
         }
     }
 
@@ -101,16 +102,16 @@ void runGameLoop(SDL_Renderer* renderer) {
         }
 
         // Make the ball move
+
         updateBallPosition(&gameBall, SCREEN_WIDTH, SCREEN_HEIGHT);
 
         // Check for ball collisions with the movable block
         
-        int collisionA = checkCollision(&gameBall, &movableBlock);
+        checkCollision(&gameBall, &movableBlock);
 
-        if (collisionA) {
+        // Keep movable block within left and right bounds
 
-            gameBall.speedY = -gameBall.speedY;
-        }
+        handleMovableBlockWindowBounds(&movableBlock, SCREEN_WIDTH);
 
         // Clear the renderer
         SDL_SetRenderDrawColor(renderer, 0, 100, 255, 255);
@@ -121,17 +122,20 @@ void runGameLoop(SDL_Renderer* renderer) {
             for (int j = 0; j < 10; ++j) {
 
                 renderBlock(renderer, &breakableBlock[i][j]);
+                int collision = checkCollision(&gameBall, &breakableBlock[i][j]);
                 
-                int collisionB = checkCollision(&gameBall, &breakableBlock[i][j]);
-                
-                if (collisionB) {
+                if (collision) {
 
-                    gameBall.speedY = -gameBall.speedY;
+                    // gameBall.speedY = -gameBall.speedY;
                     decreaseBlockHealth(&breakableBlock[i][j]);
 
                     if (breakableBlock[i][j].health <= 0) {
 
                         breakableBlock[i][j].isVisible = 0;
+                        breakableBlock[i][j].rect.x = 0;
+                        breakableBlock[i][j].rect.y = 0;
+                        breakableBlock[i][j].rect.w = 0;
+                        breakableBlock[i][j].rect.h = 0;
                     }
                 }
             }
@@ -149,7 +153,7 @@ void runGameLoop(SDL_Renderer* renderer) {
     }
 }
 
-void cleanupSDL(SDL_Window* window, SDL_Renderer* renderer) {
+void cleanupSDL(SDL_Window *window, SDL_Renderer *renderer) {
 
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
