@@ -11,7 +11,14 @@ include(CTest)
 
 # The main file to be compiled
 
-add_executable(main "src/main.c")
+add_executable(main
+    
+    "src/main.c"
+    "src/game.c"
+    "src/blocks.c"
+    "src/movement.c"
+    "src/collision.c"
+)
 
 # Include and link the SDL files
 

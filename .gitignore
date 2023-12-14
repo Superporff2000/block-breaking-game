@@ -3,3 +3,5 @@
 
 # Exclude logs
 /logs/
+
+/video/
