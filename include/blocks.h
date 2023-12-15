@@ -7,7 +7,6 @@ typedef struct {
     
     SDL_Rect rect;
     int health;
-    int isVisible;
 } Block;
 
 typedef struct {
@@ -25,5 +24,7 @@ void renderBall(SDL_Renderer *renderer, Ball *ball);
 void updateBallPosition(Ball *ball, int screenWidth, int screenHeight);
 
 void decreaseBlockHealth(Block *block);
+
+void removeBlock(Block *block);
 
 #endif

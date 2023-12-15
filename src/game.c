@@ -3,13 +3,15 @@
 #include "blocks.h"
 #include "movement.h"
 #include "collision.h"
+#include "image.h"
+#include <SDL2/SDL_image.h>
+
 #define SCREEN_WIDTH 600
 #define SCREEN_HEIGHT 400
 #define SCREEN_DELAY 16
 
 Block movableBlock;
-Block edgeBreakableBlock[3][1];     // The blocks at left edge should be at some distance, so
-Block breakableBlock[3][10];        // they have been defined seperately
+Block breakableBlock[3][10];
 Ball gameBall;
 
 SDL_Window *initializeSDL(void) {
@@ -54,7 +56,7 @@ SDL_Renderer *createRenderer(SDL_Window *window) {
     return renderer; // Return the created renderer
 }
 
-void runGameLoop(SDL_Renderer *renderer) {
+    void runGameLoop(SDL_Renderer *renderer) {
 
     int quit = 0;
     int speed = 5;
@@ -81,8 +83,7 @@ void runGameLoop(SDL_Renderer *renderer) {
                 quit = 1;
             }
 
-            if (event.type == SDL_KEYDOWN)
-            {
+            if (event.type == SDL_KEYDOWN) {
 
                 // Get the current state of the keyboard
                 const Uint8 *keyState = SDL_GetKeyboardState(NULL);
@@ -131,11 +132,7 @@ void runGameLoop(SDL_Renderer *renderer) {
 
                     if (breakableBlock[i][j].health <= 0) {
 
-                        breakableBlock[i][j].isVisible = 0;
-                        breakableBlock[i][j].rect.x = 0;
-                        breakableBlock[i][j].rect.y = 0;
-                        breakableBlock[i][j].rect.w = 0;
-                        breakableBlock[i][j].rect.h = 0;
+                        removeBlock(&breakableBlock[i][j]);
                     }
                 }
             }

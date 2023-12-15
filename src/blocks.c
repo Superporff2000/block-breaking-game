@@ -13,12 +13,9 @@ Block createBlock(int x, int y, int width, int height, int health) {
 }
 
 void renderBlock(SDL_Renderer *renderer, Block *block) {
-
-    if (block->isVisible) {
         
-        SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
-        SDL_RenderFillRect(renderer, &block->rect);
-    }
+    SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
+    SDL_RenderFillRect(renderer, &block->rect);
 }
 
 Ball createBall(int x, int y, int radius, int speedX, int speedY) {
@@ -50,4 +47,12 @@ void updateBallPosition(Ball *ball, int screenWidth, int screenHeight) {
 void decreaseBlockHealth(Block *block) {
 
     block->health--;
+}
+
+void removeBlock(Block *block) {
+    
+    block->rect.x = 0;
+    block->rect.y = 0;
+    block->rect.w = 0;
+    block->rect.h = 0;
 }
