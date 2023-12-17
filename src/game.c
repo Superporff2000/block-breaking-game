@@ -1,10 +1,11 @@
+#include <SDL2/SDL_image.h>
 #include "stdio.h"
 #include "game.h"
 #include "blocks.h"
 #include "movement.h"
 #include "collision.h"
 #include "image.h"
-#include <SDL2/SDL_image.h>
+#include "gameover.h"
 
 #define SCREEN_WIDTH 600
 #define SCREEN_HEIGHT 400
@@ -141,6 +142,12 @@ SDL_Renderer *createRenderer(SDL_Window *window) {
         // Render the blocks
         renderBlock(renderer, &movableBlock);
         renderBall(renderer, &gameBall);
+
+        // Game over if ball gets past bottom edge
+        if (gameBall.rect.y > SCREEN_HEIGHT) {
+
+            gameOver(renderer);
+        }
 
         // Render the rect to the screen
         SDL_RenderPresent(renderer);
