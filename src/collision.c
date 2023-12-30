@@ -57,14 +57,12 @@ int checkCollision(Ball *ball, Block *block)
     
     decreaseBlockHealth(block);
     return 1;
-
 }
 
 void handleBallWindowBounds(Ball *ball, int screenWidth, int screenHeight) {
 
     int ballHitTopBound = ball->rect.y < 0;
     int ballHitLeftBound = ball->rect.x < 0;
-    int ballHitBottomBound = (ball->rect.y + ball->rect.h) > screenHeight;
     int ballHitRightBound = (ball->rect.x + ball->rect.w) > screenWidth;
 
     if (ballHitTopBound) {
@@ -77,12 +75,6 @@ void handleBallWindowBounds(Ball *ball, int screenWidth, int screenHeight) {
 
         ball->rect.x = 0;
         ball->speedX = -ball->speedX; // Reverse the X direction
-    }
-
-    if (ballHitBottomBound) {
-
-        ball->rect.y = screenHeight - ball->rect.h;
-        ball->speedY = -ball->speedY;
     }
 
     if (ballHitRightBound) {
@@ -100,7 +92,6 @@ void handleMovableBlockWindowBounds(Block *block, int screenWidth) {
     if (movableBlockHitLeftBound) {
 
         block->rect.x = 0;
-        // block->speedX = 0;
     }
 
     if (movableBlockHitRightBound) {
