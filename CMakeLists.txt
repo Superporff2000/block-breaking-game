@@ -19,6 +19,7 @@ add_executable(main
     "src/movement.c"
     "src/collision.c"
     "src/image.c"
+    "src/gameover.c"
 )
 
 # Include and link the SDL files
