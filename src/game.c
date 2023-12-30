@@ -4,6 +4,7 @@
 #include "movement.h"
 #include "collision.h"
 #include "image.h"
+#include "gameover.h"
 #include <SDL2/SDL_image.h>
 
 #define SCREEN_WIDTH 600
@@ -142,6 +143,12 @@ SDL_Renderer *createRenderer(SDL_Window *window) {
         renderBlock(renderer, &movableBlock);
         renderBall(renderer, &gameBall);
 
+        if (gameBall.rect.y > SCREEN_HEIGHT) {
+
+            renderGameOver(renderer);
+            
+        }
+        
         // Render the rect to the screen
         SDL_RenderPresent(renderer);
 
