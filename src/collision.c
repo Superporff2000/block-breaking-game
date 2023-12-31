@@ -1,8 +1,8 @@
 #include "collision.h"
 #include "blocks.h"
 
-int checkCollision(Ball *ball, Block *block)
-{
+int checkCollision(Ball *ball, Block *block) {
+
     int ballLeft = ball->rect.x;
     int ballRight = ball->rect.x + ball->rect.w;
     int ballTop = ball->rect.y;
@@ -19,8 +19,8 @@ int checkCollision(Ball *ball, Block *block)
     int ballHitBlockRight = 0;
 
     // Check if there is no collision
-    if (ballRight < blockLeft || ballLeft > blockRight || ballBottom < blockTop || ballTop > blockBottom)
-    {
+    if (ballRight < blockLeft || ballLeft > blockRight || ballBottom < blockTop || ballTop > blockBottom) {
+
         return 0;
     }
 
@@ -51,6 +51,7 @@ int checkCollision(Ball *ball, Block *block)
     }
 
     else if (ball->speedY < 0 && ballBottom > blockBottom) {
+        
         ball->rect.y = blockBottom;
         ball->speedY = -ball->speedY;
     }

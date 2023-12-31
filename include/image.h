@@ -4,6 +4,7 @@
 #include <SDL2/SDL.h>
 
 typedef struct {
+    
     SDL_Texture *texture;
     int width;
     int height;

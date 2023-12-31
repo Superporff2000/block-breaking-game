@@ -18,6 +18,7 @@ Image loadImage(SDL_Renderer *renderer, const char *imagePath) {
     image.texture = SDL_CreateTextureFromSurface(renderer, surface);
 
     if (!image.texture) {
+        
         fprintf(stderr, "Failed to create texture from image %s: %s\n", imagePath, SDL_GetError());
         SDL_FreeSurface(surface);
         return image;

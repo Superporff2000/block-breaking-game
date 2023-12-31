@@ -18,6 +18,7 @@ Ball gameBall;
 SDL_Window *initializeSDL(void) {
 
     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
+        
         fprintf(stderr, "SDL initialization failed: %s\n", SDL_GetError());
         return NULL;
     }
@@ -60,7 +61,7 @@ SDL_Renderer *createRenderer(SDL_Window *window) {
     void runGameLoop(SDL_Renderer *renderer) {
 
     int quit = 0;
-    int speed = 5;
+    int speed = 4;
     SDL_Event event;
 
     movableBlock = createBlock(210, 350, 180, 40, 1);
@@ -76,49 +77,41 @@ SDL_Renderer *createRenderer(SDL_Window *window) {
     }
 
     while (!quit) {
-        
-        while (SDL_PollEvent(&event) != 0) {
 
-            if (event.type == SDL_QUIT) {
-                
-                quit = 1;
-            }
+        SDL_PollEvent(&event);
 
-            if (event.type == SDL_KEYDOWN) {
+        const Uint8 *keyState = SDL_GetKeyboardState(NULL);
 
-                // Get the current state of the keyboard
-                const Uint8 *keyState = SDL_GetKeyboardState(NULL);
+        if (event.type == SDL_QUIT) {
 
-                switch (event.key.keysym.scancode)
-                {
+            quit = 1;
+        }
 
-                case SDL_SCANCODE_A:
-                    moveBlockLeft(&movableBlock, speed, keyState);
-                    break;
+        // Make movable block move
+        if (keyState[SDL_SCANCODE_A]) {
 
-                case SDL_SCANCODE_D:
-                    moveBlockRight(&movableBlock, speed, keyState);
-                    break;
-                }
-            }
+            moveBlockLeft(&movableBlock, speed, keyState);
+        }
+
+        else if (keyState[SDL_SCANCODE_D]) {
+
+            moveBlockRight(&movableBlock, speed, keyState);
         }
 
         // Make the ball move
-
         updateBallPosition(&gameBall, SCREEN_WIDTH, SCREEN_HEIGHT);
 
         // Check for ball collisions with the movable block
-        
         checkCollision(&gameBall, &movableBlock);
 
         // Keep movable block within left and right bounds
-
         handleMovableBlockWindowBounds(&movableBlock, SCREEN_WIDTH);
 
         // Clear the renderer
         SDL_SetRenderDrawColor(renderer, 0, 100, 255, 255);
         SDL_RenderClear(renderer);
 
+        // Render the breakable blocks
         for (int i = 0; i < 3; ++i) {
 
             for (int j = 0; j < 10; ++j) {
@@ -128,7 +121,6 @@ SDL_Renderer *createRenderer(SDL_Window *window) {
                 
                 if (collision) {
 
-                    // gameBall.speedY = -gameBall.speedY;
                     decreaseBlockHealth(&breakableBlock[i][j]);
 
                     if (breakableBlock[i][j].health <= 0) {
@@ -139,12 +131,13 @@ SDL_Renderer *createRenderer(SDL_Window *window) {
             }
         }
 
-        // Render the blocks
+        // Render the movable block and ball
         renderBlock(renderer, &movableBlock);
         renderBall(renderer, &gameBall);
 
         if (gameBall.rect.y > SCREEN_HEIGHT) {
 
+            speed = 0;  // To make the block stop moving
             renderGameOver(renderer);
             
         }
@@ -153,7 +146,6 @@ SDL_Renderer *createRenderer(SDL_Window *window) {
         SDL_RenderPresent(renderer);
 
         SDL_Delay(SCREEN_DELAY);
-
     }
 }
 

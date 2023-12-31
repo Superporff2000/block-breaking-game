@@ -63,21 +63,21 @@ void renderGameOver(SDL_Renderer *renderer) {
         "   :YPPPGGGGGGPPP!.          :YG?^           :7GPPGGGGGGGGG?^  .^PPPP?^   .7PPP5! \n";
 
     // Iterate over each character in the ASCII art
-    for (int i = 0; i < strlen(asciiArt); i++)
-    {
+    for (int i = 0; i < strlen(asciiArt); i++) {
+
         char currentChar = asciiArt[i];
 
         // Skip newline characters
-        if (currentChar == '\n')
-        {
+        if (currentChar == '\n') {
+
             startX = 90; // Reset X position for the next line
             startY += boxHeight;
             continue;
         }
 
         // Skip spaces
-        if (currentChar == ' ')
-        {
+        if (currentChar == ' ') {
+            
             startX += boxWidth;
             continue;
         }
